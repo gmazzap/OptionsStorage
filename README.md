@@ -23,7 +23,7 @@ It requires **PHP 5.4+**, so array short syntax can be used in configuration fil
     - [Get hooks](#get-hooks)
     - [Array access](#array-access)
   - [Set Data](#set-data)
-  -[Database freezing](#database-freezing)
+  - [Database freezing](#database-freezing)
     - [Preserving files data](#preserving-files-data)
   - [Restore from db](#restore-from-db)
   - [DB and files data naming conflicts](#db-and-files-data-naming-conflicts)
@@ -247,6 +247,8 @@ This task can be done in 2 ways:
  - calling the `fromDB()` method and pass to it the option name
  - pass the option name to constructor
 
+Two methods are equivalent:
+
     $storage = new GM\OptionsStorage;
     $storage->fromDB( 'my-option' );
     
@@ -264,13 +266,17 @@ As [said](#database-freezing) `toDB()` method save the current state of containe
     $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH. '/conf' );
     $yellow_fruits = $storage->get( 'conf-child.fruits.yellow' );
     var_dump( $yellow_fruits ); // array(2) { [0]=> string(6) "banana" [1]=> string(5) "lemon" }
+    
     // removing yellow fruits
     $storage->set( 'conf-child.fruits.yellow', NULL );
+    
     // add raspberries to red fruits
     $storage->set( 'conf-child.fruits.red', [ 'strawberries', 'raspberries' ] );
+    
     // test
     $yellow_fruits = $storage->get( 'conf-child.fruits.yellow' );
     var_dump( $yellow_fruits ); // NULL
+    
     // database freeze
     $storage->toDB();
     
