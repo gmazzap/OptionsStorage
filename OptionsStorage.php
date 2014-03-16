@@ -83,7 +83,7 @@ class OptionsStorage implements \ArrayAccess {
                 }
             }
         }
-        set_option( $option, $save );
+        update_option( $option, $save );
         return $this;
     }
 
