@@ -21,7 +21,7 @@ It requires **PHP 5.4+**, so array short syntax can be used in configuration fil
   - [Get data](#get-data)
     - [Defaults](#defaults)
     - [Get hooks](#get-hooks)
-    - #[Array access](#array-access)
+    - [Array access](#array-access)
   - [Set Data](#set-data)
   -[Database freezing](#database-freezing)
     - [Preserving files data](#preserving-files-data)
