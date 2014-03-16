@@ -1,0 +1,25 @@
+{
+    "name": "zoomlab/options-storage",
+    "description": "Options container for WordPress.",
+    "keywords": ["WordPress"],
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Giuseppe Mazzapica",
+            "email": "giuseppe.mazzapica@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*",
+        "10up/wp_mock": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {"GM\\": ""}
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
