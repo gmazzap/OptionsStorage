@@ -18,8 +18,8 @@ class OptionsStorage implements \ArrayAccess {
         }
     }
 
-    public function getDirectories() {
-        return apply_filters( 'options_storage_dirs', $this->directories );
+    public function getDirectories( $id = NULL ) {
+        return apply_filters( 'options_storage_dirs', $this->directories, $id );
     }
 
     public function setDirectories( Array $dirs ) {
@@ -62,7 +62,7 @@ class OptionsStorage implements \ArrayAccess {
         $files = $this->getFilesLoaded();
         if ( isset( $files[ $id ] ) ) return;
         if ( is_file( $id ) ) return $this->loadFile( $id );
-        $dirs = $this->getDirectories();
+        $dirs = $this->getDirectories( $id );
         foreach ( $dirs as $dir ) {
             $path = trailingslashit( $dir ) . $id;
             if ( is_file( $path ) ) {
@@ -114,7 +114,14 @@ class OptionsStorage implements \ArrayAccess {
         $this->db = [ ];
     }
 
-    public function flushFiles() {
+    public function flushFiles( $which = NULL ) {
+        if ( is_array( $which ) ) {
+            $this->files = array_diff( $this->files, $which );
+            return;
+        } elseif ( is_string( $which ) && isset( $this->files[ $which ] ) ) {
+            unset( $this->files[ $which ] );
+            return;
+        }
         $this->files = [ ];
     }
 
