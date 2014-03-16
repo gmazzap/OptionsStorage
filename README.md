@@ -1,7 +1,6 @@
 OptionsStorage
 ==============
 
----
 
 OptionsStorage is a simple and light (one class, ~180 lines of code) options container for WordPress.
 
@@ -11,29 +10,28 @@ It is **not** a full plugin, but it's intended to be used in larger projects and
 
 It requires **PHP 5.4+**, so array short syntax can be used in configuration files.
 
-----
 
 ##Table of Contents##
 
-- ####[Add to your projects](#add-to-your-projects)####
-- ####[Usage](#usage)####
-  - #####[Configuration files](#configuration-files)#####
-  - #####[Register folders](#register-folders)#####
-    - #####[Folders hook](#folders-hook)#####
-  - #####[Get data](#get-data)#####
-    - #####[Defaults](#defaults)#####
-    - #####[Get hooks](#get-hooks)#####
-    - #####[Array access](#array-access)#####
-  - #####[Set Data](#set-data)#####
-  - #####[Database freezing](#database-freezing)#####
-    - #####[Preserving files data](#preserving-files-data)#####
-  - #####[Restore from db](#restore-from-db)#####
-  - #####[DB and files data naming conflicts](#db-and-files-data-naming-conflicts)#####
-  - #####[Loading files "manually"](#loading-files-manually)#####
-  - #####[Flushing](#flushing)#####
-    - #####[Flushing files](#flushing-files)#####
-    - #####[Flushing DB](#flushing-db)#####
-    - #####[Flushing all](#flushing-all)#####
+- [Add to your projects](#add-to-your-projects)
+- [Usage](#usage)
+  - [Configuration files](#configuration-files)
+  - [Register folders](#register-folders)
+    - [Folders hook](#folders-hook)
+  - [Get data](#get-data)
+    - [Defaults](#defaults)
+    - [Get hooks](#get-hooks)
+    - #[Array access](#array-access)
+  - [Set Data](#set-data)
+  -[Database freezing](#database-freezing)
+    - [Preserving files data](#preserving-files-data)
+  - [Restore from db](#restore-from-db)
+  - [DB and files data naming conflicts](#db-and-files-data-naming-conflicts)
+  - [Loading files "manually"](#loading-files-manually)
+  - [Flushing](#flushing)
+    - [Flushing files](#flushing-files)
+    - [Flushing DB](#flushing-db)
+    - [Flushing all](#flushing-all)
 
 
 ---
