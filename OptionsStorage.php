@@ -11,9 +11,12 @@ class OptionsStorage implements \ArrayAccess {
 
     protected $directories = [ ];
 
+    protected $option;
+
 
     public function __construct( $option = NULL ) {
         if ( ! is_null( $option ) ) {
+            $this->option = $option;
             $this->fromDB( $option );
         }
     }
@@ -72,8 +75,12 @@ class OptionsStorage implements \ArrayAccess {
         }
     }
 
-    public function toDB( $option ) {
-        if ( ! is_string( $option ) ) throw new \InvalidArgumentException;
+    public function toDB( $option = NULL ) {
+        if ( ! is_null( $option ) && ! is_string( $option ) ) throw new \InvalidArgumentException;
+        if ( is_null( $option ) && ! empty( $this->option ) ) $option = $this->option;
+        if ( empty( $option ) ) {
+            throw new \BadMethodCallException( __METHOD__ . ' needs an option name.' );
+        }
         $save = $this->storage;
         $dont_save = apply_filter( 'options_storage_skip_todb', NULL );
         if ( ! empty( $dont_save ) && is_array( $dont_save ) ) {
