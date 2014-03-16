@@ -13,13 +13,13 @@ class OptionsStorageTest extends TestCase {
     }
 
     function testSetGetDirectoriesFiltered() {
+        \WP_Mock::onFilter( 'options_storage_dirs' )
+            ->with( [ 'foo', 'bar', 'baz' ], 'foo' )
+            ->reply( [ 'foo', 'bar', 'baz', 'hello' ] );
         $dirs = [ 'foo', 'bar', 'baz' ];
         $o = new O;
         $o->setDirectories( $dirs );
-        \WP_Mock::onFilter( 'options_storage_dirs' )
-            ->with( [ 'foo', 'bar', 'baz' ] )
-            ->reply( [ 'foo', 'bar', 'baz', 'hello' ] );
-        assertEquals( [ 'foo', 'bar', 'baz', 'hello' ], $o->getDirectories() );
+        assertEquals( [ 'foo', 'bar', 'baz', 'hello' ], $o->getDirectories( 'foo' ) );
     }
 
     /**
@@ -39,12 +39,12 @@ class OptionsStorageTest extends TestCase {
 
     function testAddDirFiltered() {
         \WP_Mock::onFilter( 'options_storage_dirs' )
-            ->with( __DIR__ )
+            ->with( __DIR__, 'foo' )
             ->reply( [ 'foo', 'bar' ] );
         $o = new O;
         $oo = $o->addDir( __DIR__ );
         assertEquals( $o, $oo );
-        assertEquals( [ 'foo', 'bar' ], $oo->getDirectories() );
+        assertEquals( [ 'foo', 'bar' ], $oo->getDirectories( 'foo' ) );
     }
 
     function testGetShortcut() {
