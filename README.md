@@ -133,8 +133,10 @@ multidimensional array using array keys *glued* by dots. Code will be more clear
 
     $greeting = $storage->get( 'conf-parent.greetings.meet.after12' );
     var_dump( $greeting ); // string(12) "Good evening" 
+    
     $red_fruit = $storage->get( 'conf-child.fruits.red' );
     var_dump( $red_fruit ); // array(1) { [0]=> string(12) "strawberries" }
+    
     $yellow_fruits = $storage->get( 'conf-child.fruits.yellow' );
     var_dump( $yellow_fruits ); // array(2) { [0]=> string(6) "banana" [1]=> string(5) "lemon" }
     
@@ -148,6 +150,7 @@ Files are loaded only when if a configuration are getted, otherwise file will ne
 
     $greeting = $storage->get( 'conf-parent.greetings.friend-meet' ); // without default
     var_dump( $greeting ); // NULL
+    
     $greeting = $storage->get( 'conf-parent.greetings.friend-meet', 'Hi there!' ); // with default
     var_dump( $greeting ); // string(9) "Hi there!"
     
@@ -212,12 +215,14 @@ Set an load methods are useful, mostly when used in combination with database fr
 ###Database freezing###
 
 One useful feature od OptionsStorage is the possibility to save the current state of the container in WordPress database.
+
 That is as easy as call the method `toDB()` on the container instance. It accepts one argument that is the option name: in  effects, what this method does is just save a serialized option by calling the WP core [`update_option`](http://codex.wordpress.org/Function_Reference/update_option) function.
 
 Please keep in mind: `toDB()` save the current state of container, i. e. all the options already loaded via files or setted via `set()` method. Options in files never loaded (so never used or *manually* loaded via `load()` before calling `toDB()`) are not saved in database.
 
     $storage->get('conf-child'); 
     $storage->get('conf-parent');
+   
     // now the current storage state contains both files data, let's freeze to db
     $storage->toDB( 'my-option' );
 
@@ -233,16 +238,19 @@ Both methods works, of course, if applyed before call `toDB()`.
 
     $storage->get('conf-child'); 
     $storage->get('conf-parent');
+    
     // avoiding 'conf-child' data are saved in database
     add_filter( 'options_storage_skip_todb', function( $preserve = NULL ) {
       $preserve = (array) $preserve;
       return array_merge( $preserve, [ 'conf-child' ] );
     });
+    
     $storage->toDB();
     
 As shown above, callback hooking into `'options_storage_skip_todb'` filter, must return an array, where values are all the files names (with no extension, as usual) that want to be skipped.
 
 ###Restore from db###
+
 This task can be done in 2 ways:
  - calling the `fromDB()` method and pass to it the option name
  - pass the option name to constructor
@@ -264,6 +272,7 @@ As [said](#database-freezing) `toDB()` method save the current state of containe
 
     $storage = new GM\OptionsStorage('my-option');
     $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH. '/conf' );
+    
     $yellow_fruits = $storage->get( 'conf-child.fruits.yellow' );
     var_dump( $yellow_fruits ); // array(2) { [0]=> string(6) "banana" [1]=> string(5) "lemon" }
     
@@ -282,7 +291,9 @@ As [said](#database-freezing) `toDB()` method save the current state of containe
     
 On a subsequent request now we do:
 
-    $storage = new GM\OptionsStorage('my-option'); // this time the state is what we freezed in previous code
+    // load the state from what "freezed" in previous code
+    $storage = new GM\OptionsStorage('my-option');
+    
     $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH. '/conf' );
     
     $red_fruits = $storage->get( 'conf-child.fruits.red' );
