@@ -96,40 +96,42 @@ A configuration file, is a standard PHP file that returns an associative array.
     
 ###Register folders###
 
-To register folders in the container, we need a container instance. then is possible to call on it:
+To register folders in the container, we need a container instance. After that is possible to call on it:
  - `setDirectories` passing an array of paths
  - `addDir` passing a single folder path.
 
-A call `setDirectories will overwrite the directories previously setted.
+Call `setDirectories` will overwrite the directories previously setted.
 
     $storage = new GM\OptionsStorage;
     $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH. '/conf' );
     $storage->addDir( plugin_dir_path( __FILE__ ) . 'conf' );
     
 Please note that register directories does **not** mean that all php files in those directories are loaded,
-but we says to OptionsStorage where to look for files if needed: files are loaded only if required and only once.
+but it is a way to say to OptionsStorage where to look for files: files are loaded only if required and only once.
 
 ####Folders hook####
 
-An alternative to register folders using the 2 methods explained above, is possible to use the filter hook `'options_storage_dirs'` to change the folders. This hook pass to hooking callbaks 2 params: the 1st is, off course, the actual registered folders, the second is the request id (see [Get hooks](#get-hooks) section below) 
+An alternative to register folders using the 2 methods explained above, is to use the filter hook `'options_storage_dirs'`. This hook pass to hooking callbaks 2 params: the 1st is, off course, the actual registered folders, the second is the request id (see [Get hooks](#get-hooks) section below) 
 
     /**
      * Skip stylesheet path for the option 'conf-child.foo'
      */
      add_filter( 'options_storage_dirs', function( $dirs, $id ) {
-       if ( $id === 'conf-child.foo' ) $dirs = [ TEMPLATEPATH. '/conf' ];
+       if ( $id === 'conf-child.foo' ) $dirs = [ TEMPLATEPATH . '/conf' ];
        return $dirs;
      });
 
-Nothe that, as written, previous filter works only if added before any option inside the file `conf-child.php` is used. That because, as already said, file are loaded only once, and so if the file was already loaded OptionsStorage will not traverse directory to finde the file again, so the filter is ignored.
-However is possible force one, some or all files to be loaded again using the [`flushFiles()`](#flushing-files).
+Note that, as written, previous filter works only if added before any option inside the file `conf-child.php` is used. That because, as already said, file are loaded only once, and so if the file was already loaded OptionsStorage will not traverse directory to find the file again, so the filter is ignored.
+However is possible to force one, some or all files to be loaded again using [`flushFiles()`](#flushing-files).
 
 
 
 ###Get data###
 
 After the 3 lines of code above we can access to data using the `get` method with "dot notation", i.e. access to
-multidimensional array using array keys *glued* by dots. Code will be more clear, assuming conf files posted above:
+multidimensional array using array keys *glued* with dots. Code will be more clear.
+
+So, assuming conf files posted above:
 
     $greeting = $storage->get( 'conf-parent.greetings.meet.after12' );
     var_dump( $greeting ); // string(12) "Good evening" 
@@ -140,9 +142,9 @@ multidimensional array using array keys *glued* by dots. Code will be more clear
     $yellow_fruits = $storage->get( 'conf-child.fruits.yellow' );
     var_dump( $yellow_fruits ); // array(2) { [0]=> string(6) "banana" [1]=> string(5) "lemon" }
     
-So, the first part of the dotted string is the name of the php file without extension. Note that there is no need to specify the folder because the class will look in the registered folders. If a file named `conf-parent.php` exists in more than one directory, than the first found will win (searching folders in order of addition).
+The first part of the dotted string is the name of the php file without extension. Note that there is no need to specify the folder because the class will look in the registered folders. If a file named `conf-parent.php` exists in more than one directory, than the first found will win (searching folders in order of addition).
 
-Files are loaded only when if a configuration are getted, otherwise file will never be loaded. Of course, files are loaded only once, data are cached so all request after first are returned from cache.
+A files is loaded only when an option inside it is requested, otherwise it will never be loaded. Files are loaded only once, then data are cached and all request after first are returned from cache.
 
 ####Defaults####
 
@@ -159,7 +161,7 @@ Files are loaded only when if a configuration are getted, otherwise file will ne
 `get()` method trigger 2 filter hooks, one *before* get data, other *after*
 
  - `"options_storage_shortcut_{$id}"` is triggered before, so returning a non-null value on that filter means does not search in configuration data. This hook is  variable, the `$id` part is whatever is passed as 1st param to `get()`. This filters pass to hooking callbacks only one arguments, the actual value (`NULL`, by default)
- - 'options_storage_get' is triggered after the data is retrieved. This hook pass to hooking callbacks 2 params: 1st is, of course, the found data (or default, when applicable) and 2nd param is the same of `$id` in previous hook
+ - `'options_storage_get'` is triggered after the data is retrieved. This hook pass to hooking callbacks 2 params: 1st is, of course, the found data (or default, when applicable) and 2nd param is the same of `$id` in previous hook
 
         $test = $storage->get( 'conf-parent.foo' );
         var_dump( $test ); // string(4) "Foo!"
@@ -195,7 +197,7 @@ As alternative to the `get` method, is also possible to get data using the array
 ###Set data###
 
 OptionsStorage allow to set data on runtime using the same dot notation used to get data. 
-Of course, files are **not** edited, what change is the data one can retrieve using `get()` method on the same request:
+Of course, files are **not** edited, what change is the data that can be retrieved using `get()` method:
 
     $yellow_fruits = $storage->get( 'conf-child.fruits.yellow' );
     var_dump( $yellow_fruits ); // array(2) { [0]=> string(6) "banana" [1]=> string(5) "lemon" }
@@ -214,11 +216,11 @@ Set an load methods are useful, mostly when used in combination with database fr
 
 ###Database freezing###
 
-One useful feature od OptionsStorage is the possibility to save the current state of the container in WordPress database.
+One useful feature of OptionsStorage is the possibility to save the current state of the container in WordPress database.
 
 That is as easy as call the method `toDB()` on the container instance. It accepts one argument that is the option name: in  effects, what this method does is just save a serialized option by calling the WP core [`update_option`](http://codex.wordpress.org/Function_Reference/update_option) function.
 
-Please keep in mind: `toDB()` save the current state of container, i. e. all the options already loaded via files or setted via `set()` method. Options in files never loaded (so never used or *manually* loaded via `load()` before calling `toDB()`) are not saved in database.
+Please keep in mind: `toDB()` save the current state of container, i. e. all the options already loaded via files or setted via `set()` method. Options in files never loaded (so never used or *manually* loaded via `load()`) are not saved in database.
 
     $storage->get('conf-child'); 
     $storage->get('conf-parent');
@@ -251,7 +253,7 @@ As shown above, callback hooking into `'options_storage_skip_todb'` filter, must
 
 ###Restore from db###
 
-This task can be done in 2 ways:
+Restore data saved in db can be done in 2 ways:
  - calling the `fromDB()` method and pass to it the option name
  - pass the option name to constructor
 
@@ -263,7 +265,7 @@ Two methods are equivalent:
     // following line does the same thing of previous two
     $storage = new GM\OptionsStorage( 'my-option' );
 
-When `fromDB()` is called, **entire** container state is overriden with anything in database (unless otion is empty, in that case method does nothing). So, using the constructor method is possible to avoid unwanted state override.
+When `fromDB()` is called, **entire** container state is overriden with anything in database (unless option is empty, in that case method does nothing). So, using the constructor method is possible to avoid unwanted state override.
 The constructor method has another effect: when used (even if the option is empty), then the `toDB()` can be called without any argument: the option name passed to constructor will be used as default.
 
 ###DB and files data naming conflicts###
@@ -289,12 +291,12 @@ As [said](#database-freezing) `toDB()` method save the current state of containe
     // database freeze
     $storage->toDB();
     
-On a subsequent request now we do:
+On a subsequent request:
 
     // load the state from what "freezed" in previous code
     $storage = new GM\OptionsStorage('my-option');
     
-    $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH. '/conf' );
+    $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH . '/conf' );
     
     $red_fruits = $storage->get( 'conf-child.fruits.red' );
     // result from database
@@ -304,7 +306,7 @@ On a subsequent request now we do:
     // result from files (on database was set to null)
     var_dump( $yellow_fruits ); // array(2) { [0]=> string(6) "banana" [1]=> string(5) "lemon" }
     
-How is possible that `$yellow_fruits` contains the file-based data and `$red_fruits` contain database data? Reason is simple: on every get call, if the current state contain db data, but the requested data index is not find, OptionsStorage look on file and load it if necessary, but this does not override database data, because in case of naming conflics php function [`array_replace_recursive`](http://www.php.net/manual/en/function.array-replace-recursive.php) (where db data replace file data) is applied on conflict data.
+How is possible that `$yellow_fruits` contains the file-based data and `$red_fruits` contain database data? Reason is simple: on every get call, if the current state contain db data, but the requested data index is not found, OptionsStorage look on file and load it if necessary, but file data does not override database data, because in case of naming conflics is used the php function [`array_replace_recursive`](http://www.php.net/manual/en/function.array-replace-recursive.php) (where db data replace file data).
     
 
 ###Loading files "manually"###
