@@ -1,6 +1,6 @@
 <phpunit bootstrap="boot.php"
          colors="true"
-         convertErrorsToExcetions="true"
+         convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          stopOnFailure="true">
