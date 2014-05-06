@@ -38,24 +38,18 @@ It requires **PHP 5.4+**, so array short syntax can be used in configuration fil
 
 ##Add to your projects##
 
-In `composer.json` add `"zoomlab/options-storage": "dev-master"` to `require` object and `"https://github.com/Giuseppe-Mazzapica/OptionsStorage"` to `repositories` array.
+In `composer.json` add `"brain/options-storage": "dev-master"` to `require` object:
 
 Something like:
 
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/Giuseppe-Mazzapica/OptionsStorage"
-        }
-    ],
     "require": {
         "php": ">=5.4",
-        "zoomlab/options-storage": "dev-master"
+        "brain/options-storage": "dev-master"
     }
 
 When installing via composer, note that OptionsStorage comes with PHP-Unit test suite, however, packages needed for tests are in `require-dev` object. See [Composer docs](https://getcomposer.org/doc/03-cli.md#install) for more info.
 
-Also note that package unit tests works out of the box when OptionsStorage is installed standalone, (`vendor` folder inside package folder), otherwise additional configuration is needed. See [`tests/boot.php`](tests/boot.php) source.
+Also note that package unit tests works when OptionsStorage is installed standalone, (`vendor` folder inside package folder).
 
 ##Usage##
 
