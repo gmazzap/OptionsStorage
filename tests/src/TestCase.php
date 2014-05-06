@@ -1,5 +1,4 @@
-<?php
-namespace GM\Tests;
+<?php namespace Brain\Tests;
 
 class TestCase extends \PHPUnit_Framework_TestCase {
 
@@ -10,4 +9,5 @@ class TestCase extends \PHPUnit_Framework_TestCase {
     public function tearDown() {
         \WP_Mock::tearDown();
     }
+
 }

@@ -1,7 +1,6 @@
-<?php
-namespace GM\Tests;
+<?php namespace Brain\Tests;
 
-use GM\OptionsStorage as O;
+use Brain\OptionsStorage as O;
 
 class OptionsStorageTest extends TestCase {
 
@@ -27,7 +26,7 @@ class OptionsStorageTest extends TestCase {
      */
     function testAddDirFailsIfBadDir() {
         $o = new O;
-        $oo = $o->addDir( 'directory/foo' );
+        $o->addDir( 'directory/foo' );
     }
 
     function testAddDir() {
@@ -58,22 +57,22 @@ class OptionsStorageTest extends TestCase {
     function testGetFromDB() {
         $data = [
             'foo' => [
-                'bar' => 'Bar',
-                'baz' => 'Baz',
+                'bar'    => 'Bar',
+                'baz'    => 'Baz',
                 'foofoo' => [
                     'barbar' => TRUE
                 ]
             ]
         ];
         \WP_Mock::wpFunction( 'get_option', [
-            'times' => 1,
-            'args' => [ 'foo' ],
+            'times'  => 1,
+            'args'   => [ 'foo' ],
             'return' => $data
         ] );
         $o = new O;
         $o->fromDB( 'foo' );
         assertEquals( $data, $o->getDB(), 'Testing db' );
-        assertEquals( $data[ 'foo' ], $o->get( 'foo' ), 'Testing 1st' );
+        assertEquals( $data['foo'], $o->get( 'foo' ), 'Testing 1st' );
         assertEquals( 'Bar', $o->get( 'foo.bar' ), 'Testing 2nd' );
         assertTrue( $o->get( 'foo.foofoo.barbar' ), 'Testing 3rd' );
         assertNull( $o->get( 'foo.bar.baz' ), 'Testing non-valid' );
@@ -93,8 +92,8 @@ class OptionsStorageTest extends TestCase {
     function testGet() {
         $data = [
             'sample' => [
-                'baz' => 'BazDB',
-                'two_level' => [
+                'baz'         => 'BazDB',
+                'two_level'   => [
                     'b' => 'BDB'
                 ],
                 'three_level' => [
@@ -106,8 +105,8 @@ class OptionsStorageTest extends TestCase {
             ]
         ];
         \WP_Mock::wpFunction( 'get_option', [
-            'times' => 1,
-            'args' => [ 'sample' ],
+            'times'  => 1,
+            'args'   => [ 'sample' ],
             'return' => $data
         ] );
         \WP_Mock::wpPassthruFunction( 'trailingslashit' );
@@ -139,8 +138,8 @@ class OptionsStorageTest extends TestCase {
 
     function testSet() {
         $data = [
-            'bar' => "Bar",
-            'baz' => "Baz",
+            'bar'    => "Bar",
+            'baz'    => "Baz",
             'foofoo' => [
                 'barbar' => "BarBar"
             ]
@@ -148,16 +147,16 @@ class OptionsStorageTest extends TestCase {
         $o = new O;
         $o->set( 'foo', $data );
         assertEquals( $data, $o->get( 'foo' ), '1st' );
-        assertEquals( $data[ 'bar' ], $o->get( 'foo.bar' ), '2nd' );
-        assertEquals( $data[ 'foofoo' ][ 'barbar' ], $o->get( 'foo.foofoo.barbar' ), '3rd' );
+        assertEquals( $data['bar'], $o->get( 'foo.bar' ), '2nd' );
+        assertEquals( $data['foofoo']['barbar'], $o->get( 'foo.foofoo.barbar' ), '3rd' );
         assertNull( $o->get( 'foo.bar.baz' ), 'Testing non-valid' );
         assertEquals( 'foo', $o->get( 'foo.bar.baz', 'foo' ), 'non-valid & default' );
     }
 
     function testSetDeep() {
         $data = [
-            'bar' => "Bar",
-            'baz' => "Baz",
+            'bar'    => "Bar",
+            'baz'    => "Baz",
             'foofoo' => [
                 'barbar' => "BarBar"
             ]
@@ -173,8 +172,8 @@ class OptionsStorageTest extends TestCase {
      */
     function testSetDeepBad() {
         $data = [
-            'bar' => "Bar",
-            'baz' => "Baz",
+            'bar'    => "Bar",
+            'baz'    => "Baz",
             'foofoo' => [
                 'barbar' => "BarBar"
             ]
@@ -183,4 +182,5 @@ class OptionsStorageTest extends TestCase {
         $o->set( 'foo', $data );
         $o->set( 'foo.foofoo.barbar.bad', 'Bad!' );
     }
+
 }

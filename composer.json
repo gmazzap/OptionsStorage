@@ -1,14 +1,20 @@
 {
-    "name": "zoomlab/options-storage",
+    "name": "brain/options-storage",
     "description": "Options container for WordPress.",
     "keywords": ["WordPress"],
-    "license": "GPL",
     "authors": [
         {
             "name": "Giuseppe Mazzapica",
-            "email": "giuseppe.mazzapica@gmail.com"
+            "email": "giuseppe.mazzapica@gmail.com",
+            "homepage": "http://gm.zoomlab.it",
+            "role": "Developer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/Giuseppe-Mazzapica/OptionsStorage",
+        "source": "https://github.com/Giuseppe-Mazzapica/OptionsStorage"
+    },
+    "license": "GPL-2.0+",
     "require": {
         "php": ">=5.4"
     },
@@ -17,7 +23,14 @@
         "10up/wp_mock": "dev-master"
     },
     "autoload": {
-        "psr-4": {"GM\\": ""}
+        "psr-4": {
+            "Brain\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brain\\Tests\\": "tests/src/"
+        }
     },
     "config": {
         "optimize-autoloader": true
