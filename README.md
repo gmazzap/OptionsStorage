@@ -38,7 +38,7 @@ It requires **PHP 5.4+**, so array short syntax can be used in configuration fil
 
 ##Add to your projects##
 
-In `composer.json` add `"brain/options-storage": "dev-master"` to `require` object:
+In `composer.json` add `"giuseppe-mazzapica/options-storage": "dev-master"` to `require` object:
 
 Something like:
 
