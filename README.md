@@ -348,8 +348,11 @@ Flush db is usefule, e.g. when we want to force the container to load data from 
 ####Flushing all###
 Last flushing method is the simplest: **`$storage->flush()`**: this method reset all the container state: a container flushed using this method is *blank*, equal to one just instanciated (with no arg to constructor).
 
+=======================
 
+# License
 
+OptionsStorage is released under MIT.
 
 
 
