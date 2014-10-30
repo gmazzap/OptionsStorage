@@ -44,7 +44,7 @@ Something like:
 
     "require": {
         "php": ">=5.4",
-        "giuseppe-mazzapica/options-storage": "dev-master"
+        "gmazzap/options-storage": "dev-master"
     }
 
 When installing via composer, note that OptionsStorage comes with PHP-Unit test suite, however, packages needed for tests are in `require-dev` object. See [Composer docs](https://getcomposer.org/doc/03-cli.md#install) for more info.
