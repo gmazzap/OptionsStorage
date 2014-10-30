@@ -1,7 +1,7 @@
 {
-    "name": "giuseppe-mazzapica/options-storage",
+    "name": "gmazzap/options-storage",
     "description": "Options container for WordPress.",
-    "keywords": ["WordPress"],
+    "keywords": ["wordpress", "options"],
     "authors": [
         {
             "name": "Giuseppe Mazzapica",
@@ -14,7 +14,7 @@
         "issues": "https://github.com/Giuseppe-Mazzapica/OptionsStorage/issues",
         "source": "https://github.com/Giuseppe-Mazzapica/OptionsStorage"
     },
-    "license": "GPL-2.0+",
+    "license": "MIT",
     "require": {
         "php": ">=5.4"
     },
@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Brain\\": ""
+            "GM\\": ""
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Brain\\Tests\\": "tests/src/"
+            "GM\\Tests\\": "tests/src/"
         }
     },
     "config": {

@@ -1,6 +1,6 @@
-<?php namespace Brain\Tests;
+<?php namespace GM\Tests;
 
-use Brain\OptionsStorage as O;
+use GM\OptionsStorage as O;
 
 class OptionsStorageTest extends TestCase {
 
@@ -72,7 +72,7 @@ class OptionsStorageTest extends TestCase {
         $o = new O;
         $o->fromDB( 'foo' );
         assertEquals( $data, $o->getDB(), 'Testing db' );
-        assertEquals( $data['foo'], $o->get( 'foo' ), 'Testing 1st' );
+        assertEquals( $data[ 'foo' ], $o->get( 'foo' ), 'Testing 1st' );
         assertEquals( 'Bar', $o->get( 'foo.bar' ), 'Testing 2nd' );
         assertTrue( $o->get( 'foo.foofoo.barbar' ), 'Testing 3rd' );
         assertNull( $o->get( 'foo.bar.baz' ), 'Testing non-valid' );
@@ -147,8 +147,8 @@ class OptionsStorageTest extends TestCase {
         $o = new O;
         $o->set( 'foo', $data );
         assertEquals( $data, $o->get( 'foo' ), '1st' );
-        assertEquals( $data['bar'], $o->get( 'foo.bar' ), '2nd' );
-        assertEquals( $data['foofoo']['barbar'], $o->get( 'foo.foofoo.barbar' ), '3rd' );
+        assertEquals( $data[ 'bar' ], $o->get( 'foo.bar' ), '2nd' );
+        assertEquals( $data[ 'foofoo' ][ 'barbar' ], $o->get( 'foo.foofoo.barbar' ), '3rd' );
         assertNull( $o->get( 'foo.bar.baz' ), 'Testing non-valid' );
         assertEquals( 'foo', $o->get( 'foo.bar.baz', 'foo' ), 'non-valid & default' );
     }

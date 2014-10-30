@@ -96,7 +96,7 @@ To register folders in the container, we need a container instance. After that i
 
 Call `setDirectories` will overwrite the directories previously setted.
 
-    $storage = new Brain\OptionsStorage;
+    $storage = new GM\OptionsStorage;
     $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH. '/conf' );
     $storage->addDir( plugin_dir_path( __FILE__ ) . 'conf' );
 
@@ -253,11 +253,11 @@ Restore data saved in db can be done in 2 ways:
 
 Two methods are equivalent:
 
-    $storage = new Brain\OptionsStorage;
+    $storage = new GM\OptionsStorage;
     $storage->fromDB( 'my-option' );
 
     // following line does the same thing of previous two
-    $storage = new Brain\OptionsStorage( 'my-option' );
+    $storage = new GM\OptionsStorage( 'my-option' );
 
 When `fromDB()` is called, **entire** container state is overriden with anything in database (unless option is empty, in that case method does nothing). So, using the constructor method is possible to avoid unwanted state override.
 The constructor method has another effect: when used (even if the option is empty), then the `toDB()` can be called without any argument: the option name passed to constructor will be used as default.
@@ -266,7 +266,7 @@ The constructor method has another effect: when used (even if the option is empt
 
 As [said](#database-freezing) `toDB()` method save the current state of container, so if `set()` method is used to set to `NULL` some file-based data before call `toDB()` (as explained [here](#preserving-files-data)) is possible that when workin with db-restored container one want to access data from files even if there is naming confict, an example using file defined in [Configuration files](#configuration-files) section:
 
-    $storage = new Brain\OptionsStorage('my-option');
+    $storage = new GM\OptionsStorage('my-option');
     $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH. '/conf' );
 
     $yellow_fruits = $storage->get( 'conf-child.fruits.yellow' );
@@ -288,7 +288,7 @@ As [said](#database-freezing) `toDB()` method save the current state of containe
 On a subsequent request:
 
     // load the state from what "freezed" in previous code
-    $storage = new Brain\OptionsStorage('my-option');
+    $storage = new GM\OptionsStorage('my-option');
 
     $storage->setDirectories( STYLESHEETPATH . '/conf', TEMPLATEPATH . '/conf' );
 

@@ -1,15 +1,11 @@
-<?php namespace Brain;
+<?php namespace GM;
 
 class OptionsStorage implements \ArrayAccess {
 
     protected $storage = [ ];
-
     protected $db = [ ];
-
     protected $files = [ ];
-
     protected $directories = [ ];
-
     protected $option;
 
     public function __construct( $option = NULL ) {
@@ -42,7 +38,7 @@ class OptionsStorage implements \ArrayAccess {
         $val = $this->resolve( $id );
         if ( is_null( $val ) ) {
             $i = explode( '.', $id );
-            $this->load( "{$i[0]}.php" );
+            $this->load( "{$i[ 0 ]}.php" );
             $val = $this->resolve( $id, $default );
         }
         return apply_filters( 'options_storage_get', $val, $id );
@@ -52,7 +48,7 @@ class OptionsStorage implements \ArrayAccess {
         if ( ! is_string( $id ) || empty( $id ) ) throw new \InvalidArgumentException;
         $count = substr_count( $id, '.' );
         if ( $count === 0 ) {
-            $this->storage[$id] = $value;
+            $this->storage[ $id ] = $value;
         } else {
             $this->setDeep( $id, $value, $count );
         }
@@ -61,7 +57,7 @@ class OptionsStorage implements \ArrayAccess {
     public function load( $id ) {
         if ( ! is_string( $id ) ) throw new \InvalidArgumentException;
         $files = $this->getFilesLoaded();
-        if ( isset( $files[$id] ) ) return;
+        if ( isset( $files[ $id ] ) ) return;
         if ( is_file( $id ) ) return $this->loadFile( $id );
         $dirs = $this->getDirectories( $id );
         foreach ( $dirs as $dir ) {
@@ -83,8 +79,8 @@ class OptionsStorage implements \ArrayAccess {
         $dont_save = apply_filter( 'options_storage_skip_todb', NULL );
         if ( ! empty( $dont_save ) && is_array( $dont_save ) ) {
             foreach ( $dont_save as $key ) {
-                if ( is_string( $key ) && isset( $save[$dont_save] ) ) {
-                    unset( $save[$dont_save] );
+                if ( is_string( $key ) && isset( $save[ $dont_save ] ) ) {
+                    unset( $save[ $dont_save ] );
                 }
             }
         }
@@ -123,8 +119,8 @@ class OptionsStorage implements \ArrayAccess {
         if ( is_array( $which ) ) {
             $this->files = array_diff( $this->files, $which );
             return;
-        } elseif ( is_string( $which ) && isset( $this->files[$which] ) ) {
-            unset( $this->files[$which] );
+        } elseif ( is_string( $which ) && isset( $this->files[ $which ] ) ) {
+            unset( $this->files[ $which ] );
             return;
         }
         $this->files = [ ];
@@ -133,10 +129,10 @@ class OptionsStorage implements \ArrayAccess {
     protected function resolve( $id, $default = NULL ) {
         $link = $this->storage;
         foreach ( explode( '.', $id ) as $key ) {
-            if ( ! isset( $link[$key] ) ) {
+            if ( ! isset( $link[ $key ] ) ) {
                 return $default;
             }
-            $link = $link[$key];
+            $link = $link[ $key ];
         }
         return $link;
     }
@@ -145,16 +141,16 @@ class OptionsStorage implements \ArrayAccess {
         $link = &$this->storage;
         $i = 0;
         foreach ( explode( '.', $id ) as $i => $key ) {
-            if ( ! isset( $link[$key] ) ) {
-                $link[$key] = [ ];
-            } elseif ( ! is_array( $link[$key] ) && ( $count !== $i ) ) {
+            if ( ! isset( $link[ $key ] ) ) {
+                $link[ $key ] = [ ];
+            } elseif ( ! is_array( $link[ $key ] ) && ( $count !== $i ) ) {
                 $msg = "Bad " . __METHOD__ . " call using {$id} {$key} leaf is not an array.";
                 throw new \BadMethodCallException( $msg );
-            } elseif ( ! is_array( $link[$key] ) && ( $count === $i ) ) {
+            } elseif ( ! is_array( $link[ $key ] ) && ( $count === $i ) ) {
                 $link = array_merge( $link, [ "{$key}" => $value ] );
                 return;
             }
-            $link = &$link[$key];
+            $link = &$link[ $key ];
         }
         $link = $value;
     }
@@ -164,10 +160,10 @@ class OptionsStorage implements \ArrayAccess {
         if ( ! is_array( $options ) ) throw new \DomainException;
         $name = pathinfo( $path, PATHINFO_FILENAME );
         $db = $this->getDB();
-        if ( isset( $db[$name] ) && is_array( $db[$name] ) ) {
-            $options = array_replace_recursive( $options, $db[$name] );
+        if ( isset( $db[ $name ] ) && is_array( $db[ $name ] ) ) {
+            $options = array_replace_recursive( $options, $db[ $name ] );
         }
-        $this->storage[$name] = $options;
+        $this->storage[ $name ] = $options;
         return $options;
     }
 
